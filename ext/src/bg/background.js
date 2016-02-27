@@ -7,9 +7,9 @@
 
 //example of using a message handler from the inject scripts
 chrome.extension.onMessage.addListener(
-  function(request, sender, sendResponse) {
+	function(request, sender, sendResponse) {
 
-switch (request.directive) {
+		switch (request.directive) {
 			chrome.pageAction.show(sender.tab.id);
- 	   		sendResponse();
-  });
+			sendResponse();
+		});

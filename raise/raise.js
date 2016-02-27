@@ -2,13 +2,13 @@
  * Created by pmyron on 2/9/16.
  */
 
-/* PART 1 */
+ /* PART 1 */
 
 
 // geting domain name (company name)
 function getDomainName(hostName)
 {
-    return hostName.substring(hostName.lastIndexOf(".", hostName.lastIndexOf(".") - 1) + 1);
+  return hostName.substring(hostName.lastIndexOf(".", hostName.lastIndexOf(".") - 1) + 1);
 }
 var fullDomain = getDomainName(window.location.hostname);
 var company = fullDomain.split(".")[0];
@@ -66,36 +66,36 @@ loadXMLDoc();
 
 function part3() {
 
-var scrapedCards = [];
+  var scrapedCards = [];
 // var details = document.getElementsByClassName('toggle-details');
 for (i=0; i < details.length; i++) {
-    scrapedCards[i] = {};
-    scrapedCards[i].url = details[i].getElementsByTagName('a')[0].getAttribute('href');
-    var values = details[i].getElementsByClassName('right');
-    scrapedCards[i].value = values[0].innerText.replace(/[^0-9.]/g,'');
-    scrapedCards[i].price = values[2].innerText.replace(/[^0-9.]/g,'');
+  scrapedCards[i] = {};
+  scrapedCards[i].url = details[i].getElementsByTagName('a')[0].getAttribute('href');
+  var values = details[i].getElementsByClassName('right');
+  scrapedCards[i].value = values[0].innerText.replace(/[^0-9.]/g,'');
+  scrapedCards[i].price = values[2].innerText.replace(/[^0-9.]/g,'');
 }
 
 // getting best card
 
 function getIdealCard(purchasePrice, cards) {
-    var urlSuffix = "";
+  var urlSuffix = "";
 
-    var maxSaved = 0;
-    var maxSpot = -1;
-    for (card = 0; card < cards.length; card++) {
-        var saved = Math.min(purchasePrice, cards[card].value) - cards[card].price;
-        if (saved > maxSaved) {
-            maxSaved = saved;
-            maxSpot = card;
-        }
+  var maxSaved = 0;
+  var maxSpot = -1;
+  for (card = 0; card < cards.length; card++) {
+    var saved = Math.min(purchasePrice, cards[card].value) - cards[card].price;
+    if (saved > maxSaved) {
+      maxSaved = saved;
+      maxSpot = card;
     }
+  }
 
-    if (maxSaved > 0) {
-        urlSuffix = cards[maxSpot].url;
-    }
+  if (maxSaved > 0) {
+    urlSuffix = cards[maxSpot].url;
+  }
 
-    return urlSuffix;
+  return urlSuffix;
 }
 
 var url = getIdealCard(100, scrapedCards); // hardcoded 100

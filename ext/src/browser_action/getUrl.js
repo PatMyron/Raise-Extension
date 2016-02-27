@@ -17,7 +17,7 @@ function getUrl()
 			var fullDomain = getDomainName(domainName);
 			var company = fullDomain.split(".")[0];
 			var newURL = "https://www.raise.com/buy-gift-cards?utf8=%E2%9C%93&keywords="+company+"&type=electronic";
-        	chrome.tabs.create({ url: newURL });
+			chrome.tabs.create({ url: newURL });
 		}
 	});
 }
