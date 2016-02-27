@@ -1,6 +1,6 @@
 function getUrl()
 {
-	// document.getElementById('purchasePriceTextBox').value
+	var inputtedPurchasePrice = document.getElementById('purchasePriceTextBox').value
 	var domainName = "";
 	chrome.tabs.query({ //This method output active URL 
 		"active": true,
@@ -59,12 +59,12 @@ function getUrl()
 					parser = new DOMParser();
 					xmlDoc = parser.parseFromString(xmlDoc,"text/html");
 					details = xmlDoc.getElementsByClassName('toggle-details');
-					part3();
+					part3(url2);
 				}
 
 				loadXMLDoc2();
 
-				function part3() {
+				function part3(url2) {
 
 					var scrapedCards = [];
 					for (i=0; i < details.length; i++) {
@@ -78,6 +78,9 @@ function getUrl()
 					// getting best card
 
 					function getIdealCard(purchasePrice, cards) {
+						if (purchasePrice == "") {
+							return url2.substring(21);
+						}
 						var urlSuffix = "";
 
 						var maxSaved = 0;
@@ -97,7 +100,7 @@ function getUrl()
 						return urlSuffix;
 					}
 
-					var url3 = getIdealCard(100, scrapedCards); // hardcoded 100
+					var url3 = getIdealCard(inputtedPurchasePrice, scrapedCards);
 					var finalUrl = "https://www.raise.com" + url3;
 
 					chrome.tabs.create({ url: finalUrl });
@@ -112,7 +115,7 @@ function getUrl()
 
 function clickHandler(e) {
 	chrome.runtime.sendMessage({directive: "popup-click"}, function(response) {
-        this.close(); // close the popup when the background finishes processing request
+        // this.close(); // close the popup when the background finishes processing request
         getUrl();
     });
 }
