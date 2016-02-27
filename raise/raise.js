@@ -34,7 +34,6 @@ url2 = url2.substring(1); // removing leading slash
 
 
 
-var scrapedCards2 = [];
 
 var details = []
 function loadXMLDoc() {
@@ -53,6 +52,7 @@ function myFunction(xml) {
   parser = new DOMParser();
   xmlDoc = parser.parseFromString(xmlDoc,"text/html");
   details = xmlDoc.getElementsByClassName('toggle-details');
+  part3();
 }
 
 loadXMLDoc();

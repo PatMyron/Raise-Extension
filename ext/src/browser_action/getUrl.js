@@ -38,7 +38,72 @@ function getUrl()
 				var href = xmlDoc.getElementsByClassName("product-source")[0].getElementsByTagName('a')[0].getAttribute('href');
 				url2 = href+"&page=1&per=200";
 				url2 = "https://www.raise.com" + url2;
-				chrome.tabs.create({ url: url2 });
+
+
+				/* we must go deeper */
+				
+				var details = []
+				function loadXMLDoc2() {
+					var xmlhttp = new XMLHttpRequest();
+					xmlhttp.onreadystatechange = function() {
+						if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+							myFunction2(xmlhttp);
+						}
+					};
+					xmlhttp.open("GET", url2, true);
+					xmlhttp.send();
+				}
+				function myFunction2(xml) {
+					var x, i, xmlDoc, txt;
+					xmlDoc = xml.responseText;
+					parser = new DOMParser();
+					xmlDoc = parser.parseFromString(xmlDoc,"text/html");
+					details = xmlDoc.getElementsByClassName('toggle-details');
+					part3();
+				}
+
+				loadXMLDoc2();
+
+				function part3() {
+
+					var scrapedCards = [];
+					for (i=0; i < details.length; i++) {
+						scrapedCards[i] = {};
+						scrapedCards[i].url = details[i].getElementsByTagName('a')[0].getAttribute('href');
+						var values = details[i].getElementsByClassName('right');
+						scrapedCards[i].value = values[0].innerText.replace(/[^0-9.]/g,'');
+						scrapedCards[i].price = values[2].innerText.replace(/[^0-9.]/g,'');
+					}
+
+					// getting best card
+
+					function getIdealCard(purchasePrice, cards) {
+						var urlSuffix = "";
+
+						var maxSaved = 0;
+						var maxSpot = -1;
+						for (card = 0; card < cards.length; card++) {
+							var saved = Math.min(purchasePrice, cards[card].value) - cards[card].price;
+							if (saved > maxSaved) {
+								maxSaved = saved;
+								maxSpot = card;
+							}
+						}
+
+						if (maxSaved > 0) {
+							urlSuffix = cards[maxSpot].url;
+						}
+
+						return urlSuffix;
+					}
+
+					var url3 = getIdealCard(100, scrapedCards); // hardcoded 100
+					var finalUrl = "https://www.raise.com" + url3;
+
+					chrome.tabs.create({ url: finalUrl });
+
+				}
+
 			}
 			loadXMLDoc();
 		}
