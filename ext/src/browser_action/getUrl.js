@@ -1,5 +1,6 @@
 function getUrl()
 {
+	// document.getElementById('purchasePriceTextBox').value
 	var domainName = "";
 	chrome.tabs.query({ //This method output active URL 
 		"active": true,
@@ -16,8 +17,30 @@ function getUrl()
 			}
 			var fullDomain = getDomainName(domainName);
 			var company = fullDomain.split(".")[0];
-			var newURL = "https://www.raise.com/buy-gift-cards?utf8=%E2%9C%93&keywords="+company+"&type=electronic";
-			chrome.tabs.create({ url: newURL });
+			var url1 = "https://www.raise.com/buy-gift-cards?utf8=%E2%9C%93&keywords="+company+"&type=electronic";
+			
+			var url2 = "";
+			function loadXMLDoc() {
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+						myFunction(xmlhttp);
+					}
+				};
+				xmlhttp.open("GET", url1, true);
+				xmlhttp.send();
+			}
+			function myFunction(xml) {
+				var x, i, xmlDoc, txt;
+				xmlDoc = xml.responseText;
+				parser = new DOMParser();
+				xmlDoc = parser.parseFromString(xmlDoc,"text/html");
+				var href = xmlDoc.getElementsByClassName("product-source")[0].getElementsByTagName('a')[0].getAttribute('href');
+				url2 = href+"&page=1&per=200";
+				url2 = "https://www.raise.com" + url2;
+				chrome.tabs.create({ url: url2 });
+			}
+			loadXMLDoc();
 		}
 	});
 }
