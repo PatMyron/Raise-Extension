@@ -1,0 +1,29 @@
+{
+  "name": "Raise.com extension",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Save money shopping online with raise.com",
+  "homepage_url": "http://patmyron.com/raise-extension",
+  "icons": {
+    "16": "icons/raise.png",
+    "48": "icons/raise.png",
+    "128": "icons/raise.png"
+  },
+  "default_locale": "en",
+  "background": {
+    "scripts": [
+      "src/bg/background.js"
+      "src/browser_action/getUrl.js"
+    ],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_icon": "icons/raise.png",
+    "default_title": "Raise.com link",
+    "default_popup": "src/browser_action/browser_action.html"
+  },
+  "permissions": [
+    "tabs",
+    "https://www.raise.com/*"
+  ]
+}

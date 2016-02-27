@@ -1,0 +1,11 @@
+https://www.raise.com/buy-gift-cards?type=electronic&starts_with=M
+
+https://www.raise.com/buy-gift-cards?utf8=%E2%9C%93&keywords=amazon&type=electronic
+
+https://www.raise.com/buy-jcpenney-gift-cards?price_sort=asc&type=electronic
+
+https://www.raise.com/buy-jcpenney-gift-cards?page=2&per=960&price_sort=asc&type=electronic
+
+200 seems to be abitrary max?
+
+https://www.raise.com/gift-cards/ebay-156980-2501
