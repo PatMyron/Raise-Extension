@@ -1,6 +1,7 @@
 function getUrl()
 {
 	var inputtedPurchasePrice = document.getElementById('purchasePriceTextBox').value
+	inputtedPurchasePrice = inputtedPurchasePrice.replace(/[^0-9.]/g, '');
 	var domainName = "";
 	chrome.tabs.query({ //This method output active URL 
 		"active": true,
