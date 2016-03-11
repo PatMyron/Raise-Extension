@@ -66,7 +66,7 @@ function loadXMLDoc(urlBeingPassed, functionBeingPassed) {
 function getDocFromXml(xml) {
 	var xmlDoc = xml.responseText;
 	parser = new DOMParser();
-	xmlDoc = parser.parseFromString(xmlDoc,"text/html");
+	return parser.parseFromString(xmlDoc,"text/html");
 }
 
 function getUrl()
