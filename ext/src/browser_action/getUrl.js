@@ -9,9 +9,21 @@ function getCompanyName(tabs, tab) {
 	return fullDomain.split(".")[0];
 }
 
+function getScrapedCardsFromScrapedDetails(details) {
+	var scrapedCards = [];
+	for (i=0; i < details.length; i++) {
+		scrapedCards[i] = {};
+		scrapedCards[i].url = details[i].getElementsByTagName('a')[0].getAttribute('href');
+		var values = details[i].getElementsByClassName('right');
+		scrapedCards[i].value = values[0].innerText.replace(/[^0-9.]/g,'');
+		scrapedCards[i].price = values[2].innerText.replace(/[^0-9.]/g,'');
+	}
+	return scrapedCards;
+}
+
 function getIdealCard(purchasePrice, cards, cardsPageUrl) {
 	// handling empty price input
-						
+
 	if (purchasePrice == "") {
 		return "https://www.raise.com" + cardsPageUrl.substring(21);
 	}
@@ -54,9 +66,9 @@ function getUrl()
 		for (tab in tabs) {
 			var company = getCompanyName(tabs, tab);
 
-			var url1 = "https://www.raise.com/buy-gift-cards?utf8=%E2%9C%93&keywords="+company+"&type=electronic";
+			var companySearchUrl = "https://www.raise.com/buy-gift-cards?utf8=%E2%9C%93&keywords="+company+"&type=electronic";
 			
-			var url2 = "";
+			var firstPageOfCardsUrl = "";
 			function loadXMLDoc() {
 				var xmlhttp = new XMLHttpRequest();
 				xmlhttp.onreadystatechange = function() {
@@ -64,7 +76,7 @@ function getUrl()
 						myFunction(xmlhttp);
 					}
 				};
-				xmlhttp.open("GET", url1, true);
+				xmlhttp.open("GET", companySearchUrl, true);
 				xmlhttp.send();
 			}
 			function myFunction(xml) {
@@ -72,8 +84,8 @@ function getUrl()
 				parser = new DOMParser();
 				xmlDoc = parser.parseFromString(xmlDoc,"text/html");
 				var href = xmlDoc.getElementsByClassName("product-source")[0].getElementsByTagName('a')[0].getAttribute('href');
-				url2 = href+"&page=1&per=200"; // seems to be a 200 card limit unfortunately
-				url2 = "https://www.raise.com" + url2;
+				firstPageOfCardsUrl = href+"&page=1&per=200"; // seems to be a 200 card limit unfortunately
+				firstPageOfCardsUrl = "https://www.raise.com" + firstPageOfCardsUrl;
 
 
 				/* we must go deeper */
@@ -86,7 +98,7 @@ function getUrl()
 							myFunction2(xmlhttp);
 						}
 					};
-					xmlhttp.open("GET", url2, true);
+					xmlhttp.open("GET", firstPageOfCardsUrl, true);
 					xmlhttp.send();
 				}
 				function myFunction2(xml) {
@@ -94,24 +106,15 @@ function getUrl()
 					parser = new DOMParser();
 					xmlDoc = parser.parseFromString(xmlDoc,"text/html");
 					details = xmlDoc.getElementsByClassName('toggle-details');
-					scrapeCardsAndCreateNewTab(url2);
+					scrapeCardsAndCreateNewTab(firstPageOfCardsUrl);
 				}
 
 				loadXMLDoc2();
 
 				function scrapeCardsAndCreateNewTab(firstPageOfCardsUrl) {
-					var scrapedCards = [];
-					for (i=0; i < details.length; i++) {
-						scrapedCards[i] = {};
-						scrapedCards[i].url = details[i].getElementsByTagName('a')[0].getAttribute('href');
-						var values = details[i].getElementsByClassName('right');
-						scrapedCards[i].value = values[0].innerText.replace(/[^0-9.]/g,'');
-						scrapedCards[i].price = values[2].innerText.replace(/[^0-9.]/g,'');
-					}
-
+					var scrapedCards = getScrapedCardsFromScrapedDetails(details);
 					// getting best card
-					var finalUrl = getIdealCard(inputtedPurchasePrice, scrapedCards, url2);
-
+					var finalUrl = getIdealCard(inputtedPurchasePrice, scrapedCards, firstPageOfCardsUrl);
 					chrome.tabs.create({ url: finalUrl });
 				}
 			}
