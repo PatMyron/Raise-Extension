@@ -9,15 +9,13 @@ function getCompanyName(tabs, tab) {
 	return fullDomain.split(".")[0];
 }
 
-function getIdealCard(purchasePrice, cards) {
-	/* 
-
-	TODO handle empty price input
+function getIdealCard(purchasePrice, cards, cardsPageUrl) {
+	// handling empty price input
 						
 	if (purchasePrice == "") {
-		return url2.substring(21);
+		return "https://www.raise.com" + cardsPageUrl.substring(21);
 	}
-	*/
+
 	var urlSuffix = "";
 
 	var maxSaved = 0;
@@ -36,7 +34,10 @@ function getIdealCard(purchasePrice, cards) {
 
 	// TODO handle case of no good card
 
-	return urlSuffix;
+	// good case
+	var finalUrl = "https://www.raise.com" + urlSuffix;
+
+	return finalUrl;
 }
 
 function getUrl()
@@ -67,12 +68,11 @@ function getUrl()
 				xmlhttp.send();
 			}
 			function myFunction(xml) {
-				var x, i, xmlDoc, txt;
-				xmlDoc = xml.responseText;
+				var xmlDoc = xml.responseText;
 				parser = new DOMParser();
 				xmlDoc = parser.parseFromString(xmlDoc,"text/html");
 				var href = xmlDoc.getElementsByClassName("product-source")[0].getElementsByTagName('a')[0].getAttribute('href');
-				url2 = href+"&page=1&per=200";
+				url2 = href+"&page=1&per=200"; // seems to be a 200 card limit unfortunately
 				url2 = "https://www.raise.com" + url2;
 
 
@@ -90,18 +90,16 @@ function getUrl()
 					xmlhttp.send();
 				}
 				function myFunction2(xml) {
-					var x, i, xmlDoc, txt;
-					xmlDoc = xml.responseText;
+					var xmlDoc = xml.responseText;
 					parser = new DOMParser();
 					xmlDoc = parser.parseFromString(xmlDoc,"text/html");
 					details = xmlDoc.getElementsByClassName('toggle-details');
-					part3(url2);
+					scrapeCardsAndCreateNewTab(url2);
 				}
 
 				loadXMLDoc2();
 
-				function part3(url2) {
-
+				function scrapeCardsAndCreateNewTab(firstPageOfCardsUrl) {
 					var scrapedCards = [];
 					for (i=0; i < details.length; i++) {
 						scrapedCards[i] = {};
@@ -112,14 +110,10 @@ function getUrl()
 					}
 
 					// getting best card
-
-					var url3suffix = getIdealCard(inputtedPurchasePrice, scrapedCards);
-					var finalUrl = "https://www.raise.com" + url3suffix;
+					var finalUrl = getIdealCard(inputtedPurchasePrice, scrapedCards, url2);
 
 					chrome.tabs.create({ url: finalUrl });
-
 				}
-
 			}
 			loadXMLDoc();
 		}
