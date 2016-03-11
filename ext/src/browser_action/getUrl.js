@@ -84,9 +84,7 @@ function getUrl()
 				parser = new DOMParser();
 				xmlDoc = parser.parseFromString(xmlDoc,"text/html");
 				var href = xmlDoc.getElementsByClassName("product-source")[0].getElementsByTagName('a')[0].getAttribute('href');
-				firstPageOfCardsUrl = href+"&page=1&per=200"; // seems to be a 200 card limit unfortunately
-				firstPageOfCardsUrl = "https://www.raise.com" + firstPageOfCardsUrl;
-
+				firstPageOfCardsUrl = "https://www.raise.com" + href + "&page=1&per=200"; // seems to be a 200 card limit unfortunately
 
 				/* we must go deeper */
 				
