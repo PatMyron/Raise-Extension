@@ -52,6 +52,17 @@ function getIdealCard(purchasePrice, cards, cardsPageUrl) {
 	return finalUrl;
 }
 
+function loadXMLDoc(urlBeingPassed, functionBeingPassed) {
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			functionBeingPassed(xmlhttp);
+		}
+	};
+	xmlhttp.open("GET", urlBeingPassed, true);
+	xmlhttp.send();
+}
+
 function getUrl()
 {
 	var inputtedPurchasePrice = document.getElementById('purchasePriceTextBox').value
@@ -69,16 +80,7 @@ function getUrl()
 			var companySearchUrl = "https://www.raise.com/buy-gift-cards?utf8=%E2%9C%93&keywords="+company+"&type=electronic";
 			
 			var firstPageOfCardsUrl = "";
-			function loadXMLDoc() {
-				var xmlhttp = new XMLHttpRequest();
-				xmlhttp.onreadystatechange = function() {
-					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-						myFunction(xmlhttp);
-					}
-				};
-				xmlhttp.open("GET", companySearchUrl, true);
-				xmlhttp.send();
-			}
+
 			function myFunction(xml) {
 				var xmlDoc = xml.responseText;
 				parser = new DOMParser();
@@ -89,16 +91,7 @@ function getUrl()
 				/* we must go deeper */
 				
 				var details = []
-				function loadXMLDoc2() {
-					var xmlhttp = new XMLHttpRequest();
-					xmlhttp.onreadystatechange = function() {
-						if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-							myFunction2(xmlhttp);
-						}
-					};
-					xmlhttp.open("GET", firstPageOfCardsUrl, true);
-					xmlhttp.send();
-				}
+
 				function myFunction2(xml) {
 					var xmlDoc = xml.responseText;
 					parser = new DOMParser();
@@ -107,7 +100,7 @@ function getUrl()
 					scrapeCardsAndCreateNewTab(firstPageOfCardsUrl);
 				}
 
-				loadXMLDoc2();
+				loadXMLDoc(firstPageOfCardsUrl, myFunction2);
 
 				function scrapeCardsAndCreateNewTab(firstPageOfCardsUrl) {
 					var scrapedCards = getScrapedCardsFromScrapedDetails(details);
@@ -116,7 +109,7 @@ function getUrl()
 					chrome.tabs.create({ url: finalUrl });
 				}
 			}
-			loadXMLDoc();
+			loadXMLDoc(companySearchUrl, myFunction);
 		}
 	});
 }
