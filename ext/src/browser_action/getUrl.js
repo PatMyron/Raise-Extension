@@ -9,6 +9,36 @@ function getCompanyName(tabs, tab) {
 	return fullDomain.split(".")[0];
 }
 
+function getIdealCard(purchasePrice, cards) {
+	/* 
+
+	TODO handle empty price input
+						
+	if (purchasePrice == "") {
+		return url2.substring(21);
+	}
+	*/
+	var urlSuffix = "";
+
+	var maxSaved = 0;
+	var maxSpot = -1;
+	for (card = 0; card < cards.length; card++) {
+		var saved = Math.min(purchasePrice, cards[card].value) - cards[card].price;
+		if (saved > maxSaved) {
+			maxSaved = saved;
+			maxSpot = card;
+		}
+	}
+
+	if (maxSaved > 0) {
+		urlSuffix = cards[maxSpot].url;
+	}
+
+	// TODO handle case of no good card
+
+	return urlSuffix;
+}
+
 function getUrl()
 {
 	var inputtedPurchasePrice = document.getElementById('purchasePriceTextBox').value
@@ -83,31 +113,8 @@ function getUrl()
 
 					// getting best card
 
-					function getIdealCard(purchasePrice, cards) {
-						if (purchasePrice == "") {
-							return url2.substring(21);
-						}
-						var urlSuffix = "";
-
-						var maxSaved = 0;
-						var maxSpot = -1;
-						for (card = 0; card < cards.length; card++) {
-							var saved = Math.min(purchasePrice, cards[card].value) - cards[card].price;
-							if (saved > maxSaved) {
-								maxSaved = saved;
-								maxSpot = card;
-							}
-						}
-
-						if (maxSaved > 0) {
-							urlSuffix = cards[maxSpot].url;
-						}
-
-						return urlSuffix;
-					}
-
-					var url3 = getIdealCard(inputtedPurchasePrice, scrapedCards);
-					var finalUrl = "https://www.raise.com" + url3;
+					var url3suffix = getIdealCard(inputtedPurchasePrice, scrapedCards);
+					var finalUrl = "https://www.raise.com" + url3suffix;
 
 					chrome.tabs.create({ url: finalUrl });
 
