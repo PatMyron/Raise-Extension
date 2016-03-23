@@ -1,5 +1,5 @@
 function getCompanyName(tabs, tab) {
-	domainName = tabs[tab].url;
+	var domainName = tabs[tab].url;
 	domainName = domainName.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
 	function getDomainName(hostName)
 	{
@@ -69,12 +69,20 @@ function getDocFromXml(xml) {
 	return parser.parseFromString(xmlDoc,"text/html");
 }
 
+function scrapeCardsAndCreateNewTab(inputtedPurchasePrice, details, firstPageOfCardsUrl) {
+	var scrapedCards = getScrapedCardsFromScrapedDetails(details);
+	// getting best card
+	var finalUrl = getIdealCard(inputtedPurchasePrice, scrapedCards, firstPageOfCardsUrl);
+	chrome.tabs.create({ url: finalUrl }); // opening new tab 
+}
+
+
+// main function
 function getUrl()
 {
-	inputtedPurchasePrice = document.getElementById('purchasePriceTextBox').value
+	var inputtedPurchasePrice = document.getElementById('purchasePriceTextBox').value
 	inputtedPurchasePrice = inputtedPurchasePrice.replace(/[^0-9.]/g, ''); // sanitize input
-	var domainName = "";
-	chrome.tabs.query({ //This method output active URL 
+	chrome.tabs.query({ // This method outputs active URL 
 		"active": true,
 		"currentWindow": true,
 		"status": "complete",
@@ -83,10 +91,9 @@ function getUrl()
 		for (tab in tabs) {
 			var company = getCompanyName(tabs, tab);
 			var companySearchUrl = "https://www.raise.com/buy-gift-cards?utf8=%E2%9C%93&keywords="+company+"&type=electronic";
-			var firstPageOfCardsUrl = "";
 
 			function myFunction(xml) {
-				xmlDoc = getDocFromXml(xml);
+				var xmlDoc = getDocFromXml(xml);
 				var href = xmlDoc.getElementsByClassName("product-source")[0].getElementsByTagName('a')[0].getAttribute('href');
 				firstPageOfCardsUrl = "https://www.raise.com" + href + "&page=1&per=200"; // seems to be a 200 card limit unfortunately
 
@@ -95,20 +102,14 @@ function getUrl()
 				var details = []
 
 				function myFunction2(xml) {
-					xmlDoc = getDocFromXml(xml);
+					var xmlDoc = getDocFromXml(xml);
 					details = xmlDoc.getElementsByClassName('toggle-details');
-					scrapeCardsAndCreateNewTab(details, firstPageOfCardsUrl);
+					scrapeCardsAndCreateNewTab(inputtedPurchasePrice, details, firstPageOfCardsUrl);
 				}
 
 				loadXMLDoc(firstPageOfCardsUrl, myFunction2);
-
-				function scrapeCardsAndCreateNewTab(details, firstPageOfCardsUrl) {
-					var scrapedCards = getScrapedCardsFromScrapedDetails(details);
-					// getting best card
-					var finalUrl = getIdealCard(inputtedPurchasePrice, scrapedCards, firstPageOfCardsUrl);
-					chrome.tabs.create({ url: finalUrl });
-				}
 			}
+			
 			loadXMLDoc(companySearchUrl, myFunction);
 		}
 	});
