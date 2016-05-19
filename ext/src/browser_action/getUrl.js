@@ -101,7 +101,8 @@ function getUrl()
 			var company = getCompanyName(tabs, tab);
 			if (hardCodes.hasOwnProperty(company)) {
 				var urlsubstring = hardCodes[company];
-				loadXMLDoc("https://www.raise.com/buy-"+urlsubstring+"-gift-cards?type=electronic&page=1&per=200", scrape2ndUrl);
+				firstPageOfCardsUrl = "https://www.raise.com/buy-"+urlsubstring+"-gift-cards?type=electronic&page=1&per=200";
+				loadXMLDoc(firstPageOfCardsUrl, scrape2ndUrl);
 				return;
 			}
 			var companySearchUrl = "https://www.raise.com/buy-gift-cards?utf8=%E2%9C%93&keywords="+company+"&type=electronic";
