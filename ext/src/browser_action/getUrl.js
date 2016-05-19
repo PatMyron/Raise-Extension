@@ -1,3 +1,7 @@
+var details = []
+var inputtedPurchasePrice = ""
+var firstPageOfCardsUrl = ""
+
 function getCompanyName(tabs, tab) {
 	var domainName = tabs[tab].url;
 	domainName = domainName.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
@@ -76,11 +80,16 @@ function scrapeCardsAndCreateNewTab(inputtedPurchasePrice, details, firstPageOfC
 	chrome.tabs.create({ url: finalUrl }); // opening new tab 
 }
 
+function scrape2ndUrl(xml) {
+	var xmlDoc = getDocFromXml(xml);
+	details = xmlDoc.getElementsByClassName('toggle-details');
+	scrapeCardsAndCreateNewTab(inputtedPurchasePrice, details, firstPageOfCardsUrl);
+}
 
 // main function
 function getUrl()
 {
-	var inputtedPurchasePrice = document.getElementById('purchasePriceTextBox').value
+	inputtedPurchasePrice = document.getElementById('purchasePriceTextBox').value
 	inputtedPurchasePrice = inputtedPurchasePrice.replace(/[^0-9.]/g, ''); // sanitize input
 	chrome.tabs.query({ // This method outputs active URL 
 		"active": true,
@@ -90,27 +99,24 @@ function getUrl()
 	}, function (tabs) {
 		for (tab in tabs) {
 			var company = getCompanyName(tabs, tab);
+			if (hardCodes.hasOwnProperty(company)) {
+				var urlsubstring = hardCodes[company];
+				loadXMLDoc("https://www.raise.com/buy-"+urlsubstring+"-gift-cards?type=electronic&page=1&per=200", scrape2ndUrl);
+				return;
+			}
 			var companySearchUrl = "https://www.raise.com/buy-gift-cards?utf8=%E2%9C%93&keywords="+company+"&type=electronic";
 
-			function myFunction(xml) {
+			function scrape1stUrl(xml) {
 				var xmlDoc = getDocFromXml(xml);
 				var href = xmlDoc.getElementsByClassName("product-source")[0].getElementsByTagName('a')[0].getAttribute('href');
 				firstPageOfCardsUrl = "https://www.raise.com" + href + "&page=1&per=200"; // seems to be a 200 card limit unfortunately
 
 				/* we must go deeper */
 				
-				var details = []
-
-				function myFunction2(xml) {
-					var xmlDoc = getDocFromXml(xml);
-					details = xmlDoc.getElementsByClassName('toggle-details');
-					scrapeCardsAndCreateNewTab(inputtedPurchasePrice, details, firstPageOfCardsUrl);
-				}
-
-				loadXMLDoc(firstPageOfCardsUrl, myFunction2);
+				loadXMLDoc(firstPageOfCardsUrl, scrape2ndUrl);
 			}
 			
-			loadXMLDoc(companySearchUrl, myFunction);
+			loadXMLDoc(companySearchUrl, scrape1stUrl);
 		}
 	});
 }
