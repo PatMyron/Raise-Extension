@@ -125,3 +125,20 @@ function clickHandler(e) {
 document.addEventListener('DOMContentLoaded', function () {
 	document.getElementById('button').addEventListener('click', clickHandler);
 })
+
+var hardCodes = {
+	"bedbathandbeyond": "bed-bath-beyond",
+	"wholefoodsmarket": "whole-foods",
+	"tjx": "t-j-maxx-online-only",
+	"ae": "american-eagle-outfitters",
+	"regmovies": "regal-cinemas",
+	"marshallsonline": "marshalls",
+	"bathandbodyworks": "bath-body-works",
+	"toysrus": "toys-r-us",
+	"rossstores": "ross",
+	"burlingtoncoatfactory": "burlington-coat-factory",
+	"hm": "h-m",
+	"barnesandnoble": "barnes-noble",
+	"nyandcompany": "new-york-company",
+	"babiesrus": "babies-r-us"
+};
