@@ -47,8 +47,9 @@ function getIdealCard(purchasePrice, cards, cardsPageUrl) {
 	if (maxSaved > 0) {
 		urlSuffix = cards[maxSpot].url;
 	}
-
-	// TODO handle case of no good card
+	else {
+		alert("No available cards that save money")
+	}
 
 	// good case
 	var finalUrl = "https://www.raise.com" + urlSuffix;
