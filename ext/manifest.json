@@ -13,7 +13,8 @@
   "background": {
     "scripts": [
       "src/bg/background.js",
-      "src/browser_action/getUrl.js"
+      "src/browser_action/getUrl.js",
+      "src/ga.js"
     ],
     "persistent": true
   },
