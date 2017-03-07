@@ -1,9 +1,3 @@
-// if you checked "fancy-settings" in extensionizr.com, uncomment this lines
-
-// var settings = new Store("settings", {
-//     "sample_setting": "This is how you use Store.js to remember values"
-// });
-
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-58135639-4']);
 _gaq.push(['_trackPageview']);
