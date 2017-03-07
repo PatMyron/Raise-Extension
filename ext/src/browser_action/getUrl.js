@@ -1,6 +1,6 @@
-var details = []
-var inputtedPurchasePrice = ""
-var firstPageOfCardsUrl = ""
+var details = [];
+var inputtedPurchasePrice = "";
+var firstPageOfCardsUrl = "";
 
 function getCompanyName(tabs, tab) {
     var domainName = tabs[tab].url;
@@ -15,7 +15,7 @@ function getCompanyName(tabs, tab) {
 
 function getScrapedCardsFromScrapedDetails(details) {
     var scrapedCards = [];
-    for (i = 0; i < details.length; i++) {
+    for (var i = 0; i < details.length; i++) {
         scrapedCards[i] = {};
         scrapedCards[i].url = details[i].getElementsByTagName('a')[0].getAttribute('href');
         var values = details[i].getElementsByClassName('right');
@@ -36,7 +36,7 @@ function getIdealCard(purchasePrice, cards, cardsPageUrl) {
 
     var maxSaved = 0;
     var maxSpot = -1;
-    for (card = 0; card < cards.length; card++) {
+    for (var card = 0; card < cards.length; card++) {
         var saved = Math.min(purchasePrice, cards[card].value) - cards[card].price;
         if (saved > maxSaved) {
             maxSaved = saved;
@@ -52,9 +52,7 @@ function getIdealCard(purchasePrice, cards, cardsPageUrl) {
     }
 
     // good case
-    var finalUrl = "https://www.raise.com" + urlSuffix;
-
-    return finalUrl;
+    return "https://www.raise.com" + urlSuffix;
 }
 
 function loadXMLDoc(urlBeingPassed, functionBeingPassed) {
@@ -70,7 +68,7 @@ function loadXMLDoc(urlBeingPassed, functionBeingPassed) {
 
 function getDocFromXml(xml) {
     var xmlDoc = xml.responseText;
-    parser = new DOMParser();
+    var parser = new DOMParser();
     return parser.parseFromString(xmlDoc, "text/html");
 }
 
@@ -89,7 +87,7 @@ function scrape2ndUrl(xml) {
 
 // main function
 function getUrl() {
-    inputtedPurchasePrice = document.getElementById('purchasePriceTextBox').value
+    inputtedPurchasePrice = document.getElementById('purchasePriceTextBox').value;
     inputtedPurchasePrice = inputtedPurchasePrice.replace(/[^0-9.]/g, ''); // sanitize input
     chrome.tabs.query({ // This method outputs active URL
         "active": true,
@@ -97,7 +95,7 @@ function getUrl() {
         "status": "complete",
         "windowType": "normal"
     }, function (tabs) {
-        for (tab in tabs) {
+        for (var tab in tabs) {
             var company = getCompanyName(tabs, tab);
             if (hardCodes.hasOwnProperty(company)) {
                 var urlsubstring = hardCodes[company];
@@ -136,7 +134,7 @@ function clickHandler(e) {
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('button').addEventListener('click', clickHandler);
-})
+});
 
 var hardCodes = {
     "bedbathandbeyond": "bed-bath-beyond",
