@@ -46,8 +46,7 @@ function getIdealCard(purchasePrice, cards, cardsPageUrl) {
 
     if (maxSaved > 0) {
         urlSuffix = cards[maxSpot].url;
-    }
-    else {
+    } else {
         alert("No available cards that save money")
     }
 
@@ -112,14 +111,12 @@ function getUrl() {
                 if (xmlDoc.getElementsByClassName("product-source").length == 0) {
                     firstPageOfCardsUrl = "https://www.raise.com/buy-" + company + "-gift-cards?type=electronic&page=1&per=200";
                     loadXMLDoc(firstPageOfCardsUrl, scrape2ndUrl);
-                }
-                else {
+                } else {
                     var href = xmlDoc.getElementsByClassName("product-source")[0].getElementsByTagName('a')[0].getAttribute('href');
                     firstPageOfCardsUrl = "https://www.raise.com" + href + "&page=1&per=200"; // seems to be a 200 card limit unfortunately
                     loadXMLDoc(firstPageOfCardsUrl, scrape2ndUrl);
                 }
             }
-
             loadXMLDoc(companySearchUrl, scrape1stUrl);
         }
     });
