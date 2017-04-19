@@ -1,23 +1,23 @@
-Abercrombie and fitch		www.abercrombie.com 
-Amazon						www.amazon.com 
-Dicks sporting goods		www.dickssportinggoods.com 
-Dominos						www.dominos.com 
-Foot locker					www.footlocker.com 
-Forever 21					www.forever21.com 
-Google Play 				play.google.com 
-Homedepot					www.homedepot.com 
-Hotels.com					www.hotels.com 
-J crew						www.jcrew.com 
-Macy’s						www.macys.com 
-Men's wearhouse				www.menswearhouse.com 
-Office depot				www.officedepot.com 
-Sam's club					www.samsclub.com 
-Southwest airlines			www.southwest.com 
-Starbucks					www.starbucks.com 
-Under armour				www.underarmour.com 
-Urban outfitters			www.urbanoutfitters.com 
-Victoria's secret			www.victoriassecret.com 
-Warby parker				www.warbyparker.com
+Abercrombie and fitch www.abercrombie.com 
+Amazon                www.amazon.com 
+Dicks sporting goods  www.dickssportinggoods.com 
+Dominos	              www.dominos.com 
+Foot locker           www.footlocker.com 
+Forever 21            www.forever21.com 
+Google Play           play.google.com 
+Homedepot             www.homedepot.com 
+Hotels.com            www.hotels.com 
+J crew                www.jcrew.com 
+Macy’s                www.macys.com 
+Men's wearhouse       www.menswearhouse.com 
+Office depot          www.officedepot.com 
+Sam's club            www.samsclub.com 
+Southwest airlines    www.southwest.com 
+Starbucks             www.starbucks.com 
+Under armour          www.underarmour.com 
+Urban outfitters      www.urbanoutfitters.com 
+Victoria's secret     www.victoriassecret.com 
+Warby parker          www.warbyparker.com
 
 
 wholefoodsmarket.com
